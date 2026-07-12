@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winnie Wei — Electrical & Biomedical Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef2f6;
+    --panel:#ffffff;
+    --panel-alt:#e4eaf0;
+    --copper:#a8672f;
+    --copper-bright:#8c5626;
+    --signal:#1f7a52;
+    --ink:#16283d;
+    --ink-dim:#5b6b7c;
+    --line:#c7d3de;
+    --radius:2px;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    background-attachment:fixed;
+    background-position:-1px -1px;
+  }
+
+  a{color:inherit;}
+  img, video{max-width:100%; display:block;}
+
+  .wrap{max-width:960px; margin:0 auto; padding:0 28px; position:relative;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(238,242,246,0.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:16px; padding-bottom:16px; flex-wrap:wrap; gap:10px;}
+  .nav-mark{font-family:var(--mono); font-size:13px; color:var(--copper); letter-spacing:0.05em;}
+  .nav-links{display:flex; gap:20px; list-style:none; font-family:var(--mono); font-size:13px; flex-wrap:wrap;}
+  .nav-links a{color:var(--ink-dim); text-decoration:none; transition:color .15s;}
+  .nav-links a:hover{color:var(--copper);}
+
+  /* ---------- TRACE SPINE ---------- */
+  .spine{
+    position:absolute; left:0; top:0; bottom:0; width:1px;
+    background:var(--line);
+    display:none;
+  }
+  @media(min-width:860px){ .spine{display:block; left:-40px;} }
+  .via{
+    position:absolute; left:-45px; width:11px; height:11px;
+    border-radius:50%; background:var(--bg);
+    border:2px solid var(--copper);
+    display:none;
+  }
+  @media(min-width:860px){ .via{display:block;} }
+
+  section{position:relative; padding:88px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+
+  .designator{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.12em;
+    color:var(--copper); text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:8px;
+    margin-bottom:18px;
+  }
+  .designator::before{
+    content:""; width:6px; height:6px; background:var(--copper); border-radius:50%;
+  }
+
+  h1,h2,h3{font-family:var(--sans); font-weight:700; letter-spacing:-0.02em;}
+
+  /* ---------- HERO ---------- */
+  #hero{padding-top:110px;}
+  .hero-grid{display:grid; grid-template-columns:1fr; gap:40px; align-items:center;}
+  @media(min-width:720px){ .hero-grid{grid-template-columns:1.3fr 0.9fr;} }
+  .hero-text h1{font-size:clamp(32px,5vw,50px); line-height:1.08; margin-bottom:16px; color:var(--ink);}
+  .hero-text .role{font-family:var(--mono); color:var(--signal); font-size:15px; margin-bottom:20px;}
+  .hero-text p{color:var(--ink-dim); font-size:16px; max-width:46ch; margin-bottom:28px;}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; padding:11px 18px;
+    border-radius:var(--radius); text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--line); transition:border-color .15s, transform .15s, background .15s;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--copper); color:#fff; border-color:var(--copper); font-weight:600;}
+  .btn-primary:hover{background:var(--copper-bright); border-color:var(--copper-bright);}
+  .btn-ghost{color:var(--ink); border-color:var(--line); background:var(--panel);}
+  .btn-ghost:hover{border-color:var(--copper);}
+
+  .hero-photo{
+    aspect-ratio:1/1; background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); display:flex; align-items:center; justify-content:center;
+    color:var(--ink-dim); font-family:var(--mono); font-size:13px; text-align:center; padding:24px;
+    position:relative; overflow:hidden;
+  }
+  .hero-photo img{width:100%; height:100%; object-fit:cover; position:absolute; inset:0;}
+
+  /* ---------- ABOUT ---------- */
+  .about-body{max-width:64ch; color:var(--ink-dim); font-size:16px;}
+  .about-body p + p{margin-top:14px;}
+  .about-body strong{color:var(--ink); font-weight:600;}
+
+  /* ---------- EDUCATION ---------- */
+  .edu-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px 28px; max-width:64ch;
+  }
+  .edu-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+  .edu-head h3{font-size:19px;}
+  .edu-date{font-family:var(--mono); font-size:12px; color:var(--copper);}
+  .edu-org{font-family:var(--mono); font-size:13px; color:var(--ink-dim); margin-bottom:10px;}
+  .edu-detail{font-size:14px; color:var(--ink-dim);}
+
+  /* ---------- CLUBS / EXPERIENCE (emphasized) ---------- */
+  .feature-card{
+    background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--copper);
+    border-radius:var(--radius); padding:26px 28px; margin-bottom:20px;
+  }
+  .feature-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:4px;}
+  .feature-head h3{font-size:19px;}
+  .feature-date{font-family:var(--mono); font-size:12px; color:var(--copper); white-space:nowrap;}
+  .feature-org{font-family:var(--mono); font-size:13px; color:var(--ink-dim); margin-bottom:14px;}
+  .feature-desc{color:var(--ink-dim); font-size:14.5px; margin:0 0 0 18px;}
+  .feature-desc li + li{margin-top:7px;}
+
+  .exp-item{padding:20px 0; border-top:1px solid var(--line);}
+  .exp-item:first-of-type{border-top:none;}
+  .exp-date{font-family:var(--mono); font-size:12px; color:var(--copper); margin-bottom:4px;}
+  .exp-role{font-weight:600; font-size:16px; margin-bottom:2px;}
+  .exp-org{font-family:var(--mono); font-size:13px; color:var(--ink-dim); margin-bottom:8px;}
+  .exp-desc{color:var(--ink-dim); font-size:14px; margin:0 0 0 18px;}
+  .exp-desc li + li{margin-top:6px;}
+
+  /* ---------- PROJECTS (compact grid) ---------- */
+  .project-grid{display:grid; grid-template-columns:1fr; gap:18px;}
+  @media(min-width:700px){ .project-grid{grid-template-columns:1fr 1fr;} }
+  .project-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px 22px; transition:border-color .2s;
+  }
+  .project-card:hover{border-color:var(--copper);}
+  .project-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+  .project-head h3{font-size:17px;}
+  .project-tag{font-family:var(--mono); font-size:10.5px; color:var(--copper); background:rgba(168,103,47,0.08); padding:3px 8px; border-radius:2px; white-space:nowrap;}
+  .project-card p{color:var(--ink-dim); font-size:14px; margin-bottom:12px;}
+  .stack-row{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+  .stack-pill{font-family:var(--mono); font-size:10.5px; color:var(--ink-dim); border:1px solid var(--line); padding:3px 9px; border-radius:20px;}
+  .project-links{display:flex; gap:16px;}
+  .project-links a{font-family:var(--mono); font-size:12.5px; color:var(--signal); text-decoration:none; border-bottom:1px solid transparent;}
+  .project-links a:hover{border-bottom-color:var(--signal);}
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{display:grid; grid-template-columns:1fr; gap:28px;}
+  @media(min-width:640px){ .skills-grid{grid-template-columns:1fr 1fr;} }
+  .skill-group h4{font-family:var(--mono); font-size:12px; color:var(--copper); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;}
+  .skill-list{display:flex; flex-wrap:wrap; gap:8px;}
+  .skill-list span{font-family:var(--mono); font-size:13px; color:var(--ink); background:var(--panel); border:1px solid var(--line); padding:6px 12px; border-radius:2px;}
+
+  /* ---------- CONTACT ---------- */
+  #contact{text-align:left;}
+  .contact-row{display:flex; flex-wrap:wrap; gap:14px; margin-top:24px;}
+
+  footer{padding:40px 0; text-align:center; font-family:var(--mono); font-size:12px; color:var(--ink-dim);}
+
+  h2.section-title{font-size:clamp(24px,3.5vw,32px); margin-bottom:32px; color:var(--ink);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark">// WEI_W.SCH</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#clubs">Clubs</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+<div class="spine"></div>
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U0 — INTRO</span>
+  <div class="hero-grid">
+    <div class="hero-text">
+      <div class="role">Electrical &amp; Biomedical Engineering Student</div>
+      <h1>Winnie Wei</h1>
+      <p>I'm an Electrical and Biomedical Engineering student at McMaster University, working across vehicle wiring architecture, medical sensing devices, and analog circuit design. I like projects where hardware and signal processing have to work together.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#clubs">View My Work</a>
+        <a class="btn btn-ghost" href="mailto:baowenwei0101@gmail.com">Get in Touch</a>
+        <a class="btn btn-ghost" href="resume.pdf" target="_blank">Resume</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <!-- Replace this div's content with: <img src="your-photo.jpg" alt="Winnie Wei"> -->
+      [ your photo here ]
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U1 — ABOUT</span>
+  <h2 class="section-title">Background</h2>
+  <div class="about-body">
+    <p>I'm currently in my third year of Electrical and Biomedical Engineering at McMaster University, based in Hamilton, Ontario. My work spans two directions that share a common thread: <strong>signals that need to be measured, conditioned, and trusted</strong> — whether that's low-voltage power distribution on a race car or a tactile sensory substitution device for medical use.</p>
+    <p>Outside coursework, I build side projects that let me practice the full pipeline — mechanical design, circuitry, firmware, and data — end to end.</p>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section id="education">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U2 — EDUCATION</span>
+  <h2 class="section-title">Education</h2>
+  <div class="edu-card">
+    <div class="edu-head">
+      <h3>Bachelor of Engineering — Electrical &amp; Biomedical Engineering</h3>
+      <span class="edu-date">Expected Apr 2028</span>
+    </div>
+    <div class="edu-org">McMaster University · Hamilton, ON</div>
+    <div class="edu-detail">CGPA: 3.8 / 4.0</div>
+  </div>
+</section>
+
+<!-- ================= CLUBS ================= -->
+<section id="clubs">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U3 — CLUBS &amp; TEAMS</span>
+  <h2 class="section-title">Clubs &amp; Design Teams</h2>
+
+  <div class="feature-card">
+    <div class="feature-head">
+      <h3>Wire Harness Team Member</h3>
+      <span class="feature-date">Sept 2025 — Present</span>
+    </div>
+    <div class="feature-org">McMaster Formula Electric · Hamilton, ON</div>
+    <ul class="feature-desc">
+      <li>Designing the vehicle's full low-voltage wiring architecture, including power distribution, grounding strategy, connector selection, and fusing requirements.</li>
+      <li>Developing complete vehicle harness CAD and generating schematics, routing layouts, and manufacturing documentation using Excel and SolidWorks Electrical.</li>
+      <li>Supporting fabrication using motorsport-grade wiring standards and performing verification, unit and integration testing with custom PCBs, sensors, and ECUs.</li>
+    </ul>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-head">
+      <h3>Sensor Data &amp; Signal Processing Team Member</h3>
+      <span class="feature-date">Sept 2025 — Present</span>
+    </div>
+    <div class="feature-org">McMaster Medical Engineering Design Team · Hamilton, ON</div>
+    <ul class="feature-desc">
+      <li>Implementing image and signal processing algorithms for a tactile sensory substitution device using optical sensors and microcontrollers.</li>
+      <li>Designing and testing analog front-end circuitry and custom PCBs for sensor signal conditioning and digitization.</li>
+      <li>Integrating hardware–software components, troubleshooting noise issues, sampling errors, and optimizing system reliability.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U4 — EXPERIENCE</span>
+  <h2 class="section-title">Experience</h2>
+
+  <div class="exp-item">
+    <div class="exp-date">Dec 2024 — Present</div>
+    <div class="exp-role">Electrical Laboratories Student</div>
+    <div class="exp-org">PHYSICS 1E03, ELECENG 2CI4 · Hamilton, ON</div>
+    <ul class="exp-desc">
+      <li>Built and characterized RC, RL, and bridge circuits while collecting voltage/current measurements using oscilloscopes, signal generators, and an analog discovery kit.</li>
+      <li>Performed uncertainty analysis, data fitting, graphing, and circuit verification using Excel, PSpice, and WaveForms.</li>
+      <li>Collaborated to diagnose wiring errors, reduce noise artifacts, and ensure accurate circuit performance.</li>
+    </ul>
+  </div>
+
+  <!-- Add future internships/jobs here as another .exp-item block -->
+</section>
+
+<!-- ================= PROJECTS (compact) ================= -->
+<section id="projects">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U5 — PROJECTS</span>
+  <h2 class="section-title">Selected Projects</h2>
+
+  <div class="project-grid">
+    <div class="project-card">
+      <div class="project-head">
+        <h3>Automatic Crib Rocker</h3>
+        <span class="project-tag">Mechanical</span>
+      </div>
+      <p>Gear train and barrel cam assembly for controlled oscillatory motion, with servo/limit-switch automation and manufacturing-ready 3D-printed parts.</p>
+      <div class="stack-row">
+        <span class="stack-pill">Autodesk Inventor</span>
+        <span class="stack-pill">Microcontroller</span>
+        <span class="stack-pill">3D Printing</span>
+      </div>
+      <div class="project-links">
+        <a href="#" target="_blank">GitHub →</a>
+        <a href="#" target="_blank">Video →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-head">
+        <h3>Acetabulum Cup Stress Tester</h3>
+        <span class="project-tag">Biomedical</span>
+      </div>
+      <p>Raspberry Pi DAQ system for real-time load cell data, used to run tensile/compression/bending tests on orthopedic implant materials.</p>
+      <div class="stack-row">
+        <span class="stack-pill">Raspberry Pi</span>
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">Load Cells</span>
+      </div>
+      <div class="project-links">
+        <a href="#" target="_blank">GitHub →</a>
+        <a href="#" target="_blank">Writeup →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U6 — SKILLS</span>
+  <h2 class="section-title">Skills &amp; Tools</h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <h4>Hardware &amp; Electronics</h4>
+      <div class="skill-list">
+        <span>Analog Circuit Design</span><span>PCB Design (Altium)</span><span>Wire Harness Assembly</span><span>Oscilloscopes</span><span>Function Generators</span><span>DMMs</span><span>Raspberry Pi</span><span>Analog Discovery Kit</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>CAD &amp; Mechanical Design</h4>
+      <div class="skill-list">
+        <span>SolidWorks</span><span>Autodesk Inventor</span><span>AutoCAD</span><span>Technical Drawings</span><span>3D Printing (PrusaSlicer)</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Programming</h4>
+      <div class="skill-list">
+        <span>C</span><span>C++</span><span>Python</span><span>Git / GitHub</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h4>Software Tools</h4>
+      <div class="skill-list">
+        <span>PSpice</span><span>WaveForms</span><span>MATLAB</span><span>Excel</span><span>Figma</span><span>BioRender</span><span>Notion</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="via" style="top:96px;"></div>
+  <span class="designator">U7 — CONTACT</span>
+  <h2 class="section-title">Get in Touch</h2>
+  <p style="color:var(--ink-dim); max-width:48ch;">Open to internships and collaborations in electrical and biomedical engineering. Reach out directly or find me on:</p>
+  <div class="contact-row">
+    <a class="btn btn-primary" href="mailto:baowenwei0101@gmail.com">Email Me</a>
+    <a class="btn btn-ghost" href="https://www.linkedin.com/in/winnie-wei-370b15324/" target="_blank">LinkedIn</a>
+    <a class="btn btn-ghost" href="https://github.com/yourusername" target="_blank">GitHub</a>
+  </div>
+</section>
+
+</div>
+
+<footer>Built with plain HTML/CSS &nbsp;·&nbsp; hosted on GitHub Pages</footer>
+
+</body>
+</html>
