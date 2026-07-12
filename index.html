@@ -1291,85 +1291,217 @@ grid-template-columns:1fr;
 </style>
 
 
-<!-- ================= SKILLS ================= -->
-<section id="skills">
-  <span class="designator">U4 — SKILLS</span>
-  <h2 class="section-title">Skills &amp; Tools</h2>
-  <!-- Percentages are estimates — edit each data-width value (0-100) to match your actual comfort level -->
-  <div class="skills-grid">
-    <div class="skill-group">
-      <h4>Hardware &amp; Electronics</h4>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Analog Circuit Design</span><span class="skill-pct">85%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>PCB Design (Altium)</span><span class="skill-pct">75%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Wire Harness Assembly</span><span class="skill-pct">80%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Test Equipment (Scope / DMM / Function Gen)</span><span class="skill-pct">90%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-    </div>
+/* ================= SKILLS ANIMATION ================= */
 
-    <div class="skill-group">
-      <h4>CAD &amp; Mechanical Design</h4>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>SolidWorks</span><span class="skill-pct">85%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Autodesk Inventor / AutoCAD</span><span class="skill-pct">80%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>3D Printing (PrusaSlicer)</span><span class="skill-pct">85%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-      </div>
-    </div>
 
-    <div class="skill-group">
-      <h4>Programming</h4>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Python</span><span class="skill-pct">85%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>C / C++</span><span class="skill-pct">75%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Git / GitHub</span><span class="skill-pct">80%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-      </div>
-    </div>
+.skills-grid{
 
-    <div class="skill-group">
-      <h4>Software Tools</h4>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>PSpice / WaveForms</span><span class="skill-pct">80%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>MATLAB</span><span class="skill-pct">75%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Excel</span><span class="skill-pct">85%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-head"><span>Figma / BioRender</span><span class="skill-pct">70%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-width="70"></div></div>
-      </div>
-    </div>
-  </div>
-</section>
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:35px;
+
+}
+
+
+
+.skill-group{
+
+opacity:0;
+transform:translateY(30px);
+
+transition:
+opacity .6s ease,
+transform .6s ease;
+
+}
+
+
+
+.skill-group.visible{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+
+
+.skill-group h4{
+
+font-family:var(--mono);
+font-size:12px;
+
+color:var(--copper);
+
+letter-spacing:.1em;
+
+text-transform:uppercase;
+
+margin-bottom:20px;
+
+}
+
+
+
+.skill-bar{
+
+margin-bottom:18px;
+
+}
+
+
+
+.skill-bar-head{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:7px;
+
+}
+
+
+
+.skill-bar-head span:first-child{
+
+font-size:14px;
+
+}
+
+
+
+.skill-pct{
+
+font-family:var(--mono);
+
+font-size:11px;
+
+color:var(--muted);
+
+}
+
+
+
+.skill-track{
+
+height:8px;
+
+background:#edf0f3;
+
+border-radius:10px;
+
+overflow:hidden;
+
+}
+
+
+
+.skill-fill{
+
+height:100%;
+
+width:0%;
+
+border-radius:10px;
+
+
+/* animated gradient */
+
+background:
+linear-gradient(
+90deg,
+var(--copper),
+var(--green)
+);
+
+
+transition:
+width 1.3s cubic-bezier(.16,1,.3,1);
+
+position:relative;
+
+}
+
+
+
+/* glowing moving effect */
+
+
+.skill-fill::after{
+
+content:"";
+
+position:absolute;
+
+top:0;
+left:0;
+
+height:100%;
+width:40%;
+
+
+background:
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.45),
+transparent
+);
+
+
+animation:
+shine 2s infinite;
+
+
+}
+
+
+
+@keyframes shine{
+
+
+0%{
+
+transform:translateX(-150%);
+
+}
+
+
+100%{
+
+transform:translateX(300%);
+
+}
+
+
+}
+
+
+
+@media(max-width:1000px){
+
+.skills-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+
+
+@media(max-width:600px){
+
+.skills-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
 
 <!-- ================= CONTACT ================= -->
 <section id="contact">
